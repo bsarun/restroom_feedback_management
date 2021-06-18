@@ -508,15 +508,19 @@ hr {
 }
 
 .hero:before {
+    background-color: rgba(0,0,0,.8);
+}
+
+.hero:before {
     content: "";
     display: block;
-    height: 100%;
+    /* height: 200px;
     position: absolute;
     top: 0;
-    left: 0;
+    left: 0; */
     width: 100%;
     z-index: 1;
-    background-color: rgba(7, 6, 29, 0.37);
+    background-color: rgba(0,0,0,.5);
 }
 
 .hero .hero-inner {
@@ -2728,4 +2732,13 @@ a[aria-expanded=false] .fa-angle-down {
     font-weight: 600;
     padding: 0 5px;
     color: #3a3e47;
+}
+
+
+
+
+
+.mainbanner {
+    margin-top:10%;
+    position: absolute;
 }

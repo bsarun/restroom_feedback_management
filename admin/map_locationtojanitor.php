@@ -1,68 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-
-
-session_start();
-error_reporting(0);
 include("../connection/connect.php");
+error_reporting(0);
+session_start();
 
-if(isset($_POST['submit'] ))
+
+
+
+if(isset($_POST['submit']))           //if upload btn is pressed
 {
-    if(empty($_POST['uname']) ||
-   	    empty($_POST['fname'])|| 
-		empty($_POST['lname']) ||  
-		empty($_POST['email'])||
-		empty($_POST['password'])||
-		empty($_POST['phone']))
-		{
-			$error = '<div class="alert alert-danger alert-dismissible fade show">
+	
+			
+		
+			
+		  
+		
+		
+		if(empty($_POST['location'])||empty($_POST['janitor']))
+		{	
+											$error = 	'<div class="alert alert-danger alert-dismissible fade show">
 																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>All fields Required!</strong>
+																<strong>All fields Must be Fillup!</strong>
 															</div>';
+									
+		
+								
 		}
 	else
-	{
+		{
+
+            $sql = "UPDATE location_details SET j_id = ".$_POST['janitor']." WHERE location_id = ".$_POST['location']."";  // store the submited data ino the database :images
+           
+        
+                                    mysqli_query($db, $sql); 
+                                    move_uploaded_file($temp, $store);
+
+                                
+			  
+													$success = 	'<div class="alert alert-success alert-dismissible fade show">
+																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																<strong>Congrass!</strong> Location has been mapped to Janitor Successfully.
+															</div>';
+
+
 		
+	   
+	   }
+
+
 
 	
 	
-    if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) // Validate email address
-    {
-       	$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>invalid email!</strong>
-															</div>';
-    }
-	elseif(strlen($_POST['password']) < 6)
-	{
-		$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>Password must be >=6!</strong>
-															</div>';
-	}
 	
-	elseif(strlen($_POST['phone']) < 10)
-	{
-		$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>invalid phone!</strong>
-															</div>';
-	}
-	
-	else{
-       
-	
-	$mql = "update users set username='$_POST[uname]', f_name='$_POST[fname]', l_name='$_POST[lname]',email='$_POST[email]',phone='$_POST[phone]',password='".md5($_POST[password])."' where u_id='$_GET[user_upd]' ";
-	mysqli_query($db, $mql);
-			$success = 	'<div class="alert alert-success alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>User Updated!</strong></div>';
-	
-    }
-	}
 
 }
+
+
+
+
+
+
+
 
 ?>
 <head>
@@ -97,7 +96,7 @@ if(isset($_POST['submit'] ))
     <!-- Main wrapper  -->
     <div id="main-wrapper">
         <!-- header header  -->
-         <div class="header">
+       <div class="header">
             <nav class="navbar top-navbar navbar-expand-md navbar-light">
                 <!-- Logo -->
                 <div class="navbar-header">
@@ -149,7 +148,7 @@ if(isset($_POST['submit'] ))
                             <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/users/5.jpg" alt="user" class="profile-pic" /></a>
                             <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                                 <ul class="dropdown-user">
-                                    <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout</a></li>
+                                   <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -164,7 +163,7 @@ if(isset($_POST['submit'] ))
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
+                   <ul id="sidebarnav">
                         <li class="nav-devider"></li>
                         <li class="nav-label">Home</li>
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard</span></a>
@@ -178,11 +177,17 @@ if(isset($_POST['submit'] ))
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="alljanitors.php">All Janitors</a></li>
 								<li><a href="add_janitors.php">Add Janitors</a></li>
-								
-                               
                             </ul>
                         </li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-archive f-s-20 color-warning"></i><span class="hide-menu">Store</span></a>
+                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Location Details</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="alllocationdetails.php">All Location Details</a></li>
+								<li><a href="add_locationdetails.php">Add Location Details</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="map_locationtojanitor.php">Map Location To Janitor</a></li>
+                        <!-- <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-archive f-s-20 color-warning"></i><span class="hide-menu">Store</span></a>
                             <ul aria-expanded="false" class="collapse">
 								<li><a href="allrestraunt.php">All Stores</a></li>
 								<li><a href="add_category.php">Add Category</a></li>
@@ -190,7 +195,7 @@ if(isset($_POST['submit'] ))
                                 
                             </ul>
                         </li>
-                      <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
+                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
                             <ul aria-expanded="false" class="collapse">
 								<li><a href="all_menu.php">All Menues</a></li>
 								<li><a href="add_menu.php">Add Menu</a></li>
@@ -203,8 +208,7 @@ if(isset($_POST['submit'] ))
 								<li><a href="all_orders.php">All Orders</a></li>
 								  
                             </ul>
-                        </li>
-						
+                        </li> -->
                          
                     </ul>
                 </nav>
@@ -225,21 +229,10 @@ if(isset($_POST['submit'] ))
             <!-- Container fluid  -->
             <div class="container-fluid">
                 <!-- Start Page Content -->
-                     <div class="row">
-                   
-                   
-					
-					 <div class="container-fluid">
-                <!-- Start Page Content -->
                   
 									
-									<?php  
-									        echo $error;
-									        echo $success; 
-											
-											echo var_dump($_POST);
-											
-											?>
+									<?php  echo $error;
+									        echo $success; ?>
 									
 									
 								
@@ -247,79 +240,126 @@ if(isset($_POST['submit'] ))
 					    <div class="col-lg-12">
                         <div class="card card-outline-primary">
                             <div class="card-header">
-                                <h4 class="m-b-0 text-white">Update Janitors</h4>
+                                <h4 class="m-b-0 text-white">Map Location To Janitor</h4>
                             </div>
                             <div class="card-body">
-							  <?php $ssql ="select * from users where u_id='$_GET[user_upd]'";
-													$res=mysqli_query($db, $ssql); 
-													$newrow=mysqli_fetch_array($res);?>
-                                <form action='' method='post'  >
+                                <form action='' method='post'  enctype="multipart/form-data">
                                     <div class="form-body">
-                                      
+                                       
                                         <hr>
-                                        <div class="row p-t-20">
-                                            <div class="col-md-6">
+                                    
+                                            <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Username</label>
-                                                    <input type="text" name="uname" class="form-control" value="<?php  echo $newrow['username']; ?>" placeholder="username">
-                                                   </div>
-                                            </div>
-                                            <!--/span-->
-                                            <div class="col-md-6">
-                                                <div class="form-group has-danger">
-                                                    <label class="control-label">First-Name</label>
-                                                    <input type="text" name="fname" class="form-control form-control-danger"  value="<?php  echo $newrow['f_name'];  ?>" placeholder="jon">
-                                                    </div>
-                                            </div>
-                                            <!--/span-->
-                                        </div>
-                                        <!--/row-->
-                                        <div class="row p-t-20">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Last-Name </label>
-                                                    <input type="text" name="lname" class="form-control" placeholder="doe"  value="<?php  echo $newrow['l_name']; ?>">
-                                                   </div>
-                                            </div>
-                                            <!--/span-->
-                                            <div class="col-md-6">
-                                                <div class="form-group has-danger">
-                                                    <label class="control-label">Email</label>
-                                                    <input type="text" name="email" class="form-control form-control-danger"  value="<?php  echo $newrow['email'];  ?>" placeholder="example@gmail.com">
-                                                    </div>
-                                            </div>
-                                            <!--/span-->
-                                        </div>
-                                        <!--/row-->
-										 <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Password</label>
-                                                    <input type="text" name="password" class="form-control form-control-danger"   value="<?php  echo $newrow['password'];  ?>" placeholder="password">
-                                                    </div>
+                                                    <label class="control-label">Select Location</label>
+													<select name="location" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1">
+                                                        <option>Select Location</option>
+                                                 <?php $ssql ="select * from location_details";
+													$res=mysqli_query($db, $ssql); 
+													while($row=mysqli_fetch_array($res))  
+													{
+                                                       echo' <option value="'.$row['location_id'].'">'.$row['location'].'</option>';;
+													}  
+                                                 
+													?> 
+													 </select>
                                                 </div>
+                                            </div>
+											
+											 <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Select Janitor</label>
+													<select name="janitor" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1">
+                                                        <option>Select Janitor</option>
+                                                 <?php $ssql ="select * from janitors";
+													$res=mysqli_query($db, $ssql); 
+													while($row=mysqli_fetch_array($res))  
+													{
+                                                       echo' <option value="'.$row['j_id'].'">'.$row['username'].'</option>';;
+													}  
+                                                 
+													?> 
+													 </select>
+                                                </div>
+                                            </div>
+											
+											
+											
+                                        </div>
+                                        <!--/row-->
                                         
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Phone</label>
-                                                    <input type="text" name="phone" class="form-control form-control-danger"   value="<?php  echo $newrow['phone'];  ?>" placeholder="phone">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--/span-->
-                                            
                                       
                                             <!--/span-->
                                         </div>
                                     </div>
                                     <div class="form-actions">
-                                        <input type="submit" name="submit" class="btn btn-success" value="save"> 
+                                        <input type="submit" name="submit" class="btn btn-success" value="Map"> 
                                         <a href="dashboard.php" class="btn btn-inverse">Cancel</a>
                                     </div>
+
+                                    
                                 </form>
+
+                                
+                            </div>
+
+                            <div class="col-12">
+                        
+                       
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Mapped List</h4>
+                             
+                                <div class="table-responsive m-t-40">
+                                    <table id="myTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID#</th>
+                                                <th>Location Name</th>
+                                                <th>Janitor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           
+											
+											<?php
+												$sql="SELECT location_details.location,location_details.location_id,janitors.username FROM location_details,janitors where location_details.j_id = janitors.j_id order by location_details.location_id asc";
+												$query=mysqli_query($db,$sql);
+												
+													if(!mysqli_num_rows($query) > 0 )
+														{
+															echo '<td colspan="7"><center>No Mapped Data!</center></td>';
+														}
+													else
+														{				
+																	while($rows=mysqli_fetch_array($query))
+																		{
+																					
+																				
+																				
+																					echo ' <tr><td>'.$rows['location_id'].'</td>
+																								<td>'.$rows['location'].'</td>
+																								<td>'.$rows['username'].'</td>
+																									</td></tr>';
+																					 
+																						
+																						
+																		}	
+														}
+												
+											
+											?>
+                                             
+                                            
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+						 </div>
+                        </div>
                     </div>
+					
 					
 					
 					
@@ -337,7 +377,7 @@ if(isset($_POST['submit'] ))
             </div>
             <!-- End Container fluid  -->
             <!-- footer -->
-            <footer class="footer"> © 2018 All rights reserved. </footer>
+        
             <!-- End footer -->
         </div>
         <!-- End Page wrapper  -->

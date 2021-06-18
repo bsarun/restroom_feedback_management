@@ -1,68 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-
-
-session_start();
-error_reporting(0);
 include("../connection/connect.php");
-
-if(isset($_POST['submit'] ))
-{
-    if(empty($_POST['uname']) ||
-   	    empty($_POST['fname'])|| 
-		empty($_POST['lname']) ||  
-		empty($_POST['email'])||
-		empty($_POST['password'])||
-		empty($_POST['phone']))
-		{
-			$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>All fields Required!</strong>
-															</div>';
-		}
-	else
-	{
-		
-
-	
-	
-    if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) // Validate email address
-    {
-       	$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>invalid email!</strong>
-															</div>';
-    }
-	elseif(strlen($_POST['password']) < 6)
-	{
-		$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>Password must be >=6!</strong>
-															</div>';
-	}
-	
-	elseif(strlen($_POST['phone']) < 10)
-	{
-		$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>invalid phone!</strong>
-															</div>';
-	}
-	
-	else{
-       
-	
-	$mql = "update users set username='$_POST[uname]', f_name='$_POST[fname]', l_name='$_POST[lname]',email='$_POST[email]',phone='$_POST[phone]',password='".md5($_POST[password])."' where u_id='$_GET[user_upd]' ";
-	mysqli_query($db, $mql);
-			$success = 	'<div class="alert alert-success alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>User Updated!</strong></div>';
-	
-    }
-	}
-
-}
+error_reporting(0);
+session_start();
 
 ?>
 <head>
@@ -88,7 +29,7 @@ if(isset($_POST['submit'] ))
 <![endif]-->
 </head>
 
-<body class="fix-header">
+<body class="fix-header fix-sidebar">
     <!-- Preloader - style you can find in spinners.css -->
     <div class="preloader">
         <svg class="circular" viewBox="25 25 50 50">
@@ -164,7 +105,7 @@ if(isset($_POST['submit'] ))
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
+                   <ul id="sidebarnav">
                         <li class="nav-devider"></li>
                         <li class="nav-label">Home</li>
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard</span></a>
@@ -178,11 +119,17 @@ if(isset($_POST['submit'] ))
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="alljanitors.php">All Janitors</a></li>
 								<li><a href="add_janitors.php">Add Janitors</a></li>
-								
-                               
                             </ul>
                         </li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-archive f-s-20 color-warning"></i><span class="hide-menu">Store</span></a>
+                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Location Details</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="alllocationdetails.php">All Location Details</a></li>
+								<li><a href="add_locationdetails.php">Add Location Details</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="map_locationtojanitor.php">Map Location To Janitor</a></li>
+                        <!-- <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-archive f-s-20 color-warning"></i><span class="hide-menu">Store</span></a>
                             <ul aria-expanded="false" class="collapse">
 								<li><a href="allrestraunt.php">All Stores</a></li>
 								<li><a href="add_category.php">Add Category</a></li>
@@ -190,7 +137,7 @@ if(isset($_POST['submit'] ))
                                 
                             </ul>
                         </li>
-                      <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
+                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
                             <ul aria-expanded="false" class="collapse">
 								<li><a href="all_menu.php">All Menues</a></li>
 								<li><a href="add_menu.php">Add Menu</a></li>
@@ -203,8 +150,7 @@ if(isset($_POST['submit'] ))
 								<li><a href="all_orders.php">All Orders</a></li>
 								  
                             </ul>
-                        </li>
-						
+                        </li> -->
                          
                     </ul>
                 </nav>
@@ -214,7 +160,7 @@ if(isset($_POST['submit'] ))
         </div>
         <!-- End Left Sidebar  -->
         <!-- Page wrapper  -->
-        <div class="page-wrapper" style="height:1200px;">
+        <div class="page-wrapper">
             <!-- Bread crumb -->
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
@@ -225,119 +171,86 @@ if(isset($_POST['submit'] ))
             <!-- Container fluid  -->
             <div class="container-fluid">
                 <!-- Start Page Content -->
-                     <div class="row">
-                   
-                   
-					
-					 <div class="container-fluid">
-                <!-- Start Page Content -->
-                  
-									
-									<?php  
-									        echo $error;
-									        echo $success; 
+                <div class="row">
+                    <div class="col-12">
+                        
+                       
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">All Registered Janitors</h4>
+                             
+                                <div class="table-responsive m-t-40">
+                                    <table id="myTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>First-Name</th>
+                                                <th>Last-Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+												<th>Address</th>
+												  <th>Action</th>
+												 
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           
 											
-											echo var_dump($_POST);
+											<?php
+												$sql="SELECT * FROM janitors order by j_id desc";
+												$query=mysqli_query($db,$sql);
+												
+													if(!mysqli_num_rows($query) > 0 )
+														{
+															echo '<td colspan="7"><center>No User-Data!</center></td>';
+														}
+													else
+														{				
+																	while($rows=mysqli_fetch_array($query))
+																		{
+																					
+																				
+																				
+																					echo ' <tr><td>'.$rows['username'].'</td>
+																								<td>'.$rows['f_name'].'</td>
+																								<td>'.$rows['l_name'].'</td>
+																								<td>'.$rows['email'].'</td>
+																								<td>'.$rows['phone'].'</td>
+																								<td>'.$rows['address'].'</td>
+                                                                                                <td><a href="delete_users.php?user_del='.$rows['u_id'].'" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o" style="font-size:16px"></i></a> 
+                                                                                                <a href="update_users.php?user_upd='.$rows['u_id'].'" " class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="ti-settings"></i></a>
+                                                                                            </td></tr>';
+																					 
+																						
+																						
+																		}	
+														}
+												
 											
 											?>
-									
-									
-								
-								
-					    <div class="col-lg-12">
-                        <div class="card card-outline-primary">
-                            <div class="card-header">
-                                <h4 class="m-b-0 text-white">Update Janitors</h4>
-                            </div>
-                            <div class="card-body">
-							  <?php $ssql ="select * from users where u_id='$_GET[user_upd]'";
-													$res=mysqli_query($db, $ssql); 
-													$newrow=mysqli_fetch_array($res);?>
-                                <form action='' method='post'  >
-                                    <div class="form-body">
-                                      
-                                        <hr>
-                                        <div class="row p-t-20">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Username</label>
-                                                    <input type="text" name="uname" class="form-control" value="<?php  echo $newrow['username']; ?>" placeholder="username">
-                                                   </div>
-                                            </div>
-                                            <!--/span-->
-                                            <div class="col-md-6">
-                                                <div class="form-group has-danger">
-                                                    <label class="control-label">First-Name</label>
-                                                    <input type="text" name="fname" class="form-control form-control-danger"  value="<?php  echo $newrow['f_name'];  ?>" placeholder="jon">
-                                                    </div>
-                                            </div>
-                                            <!--/span-->
-                                        </div>
-                                        <!--/row-->
-                                        <div class="row p-t-20">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Last-Name </label>
-                                                    <input type="text" name="lname" class="form-control" placeholder="doe"  value="<?php  echo $newrow['l_name']; ?>">
-                                                   </div>
-                                            </div>
-                                            <!--/span-->
-                                            <div class="col-md-6">
-                                                <div class="form-group has-danger">
-                                                    <label class="control-label">Email</label>
-                                                    <input type="text" name="email" class="form-control form-control-danger"  value="<?php  echo $newrow['email'];  ?>" placeholder="example@gmail.com">
-                                                    </div>
-                                            </div>
-                                            <!--/span-->
-                                        </div>
-                                        <!--/row-->
-										 <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Password</label>
-                                                    <input type="text" name="password" class="form-control form-control-danger"   value="<?php  echo $newrow['password'];  ?>" placeholder="password">
-                                                    </div>
-                                                </div>
-                                        
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Phone</label>
-                                                    <input type="text" name="phone" class="form-control form-control-danger"   value="<?php  echo $newrow['phone'];  ?>" placeholder="phone">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--/span-->
+                                             
                                             
-                                      
-                                            <!--/span-->
-                                        </div>
-                                    </div>
-                                    <div class="form-actions">
-                                        <input type="submit" name="submit" class="btn btn-success" value="save"> 
-                                        <a href="dashboard.php" class="btn btn-inverse">Cancel</a>
-                                    </div>
-                                </form>
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+						 </div>
+                      
                             </div>
                         </div>
                     </div>
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
                 </div>
                 <!-- End PAge Content -->
             </div>
             <!-- End Container fluid  -->
+			
+			
+			
+			
             <!-- footer -->
-            <footer class="footer"> © 2018 All rights reserved. </footer>
+            <footer class="footer"> © 2018 All rights reserved. Template designed by <a href="https://colorlib.com">Colorlib</a></footer>
             <!-- End footer -->
         </div>
         <!-- End Page wrapper  -->
@@ -357,6 +270,16 @@ if(isset($_POST['submit'] ))
     <!--Custom JavaScript -->
     <script src="js/custom.min.js"></script>
 
+
+    <script src="js/lib/datatables/datatables.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <script src="js/lib/datatables/datatables-init.js"></script>
 </body>
 
 </html>

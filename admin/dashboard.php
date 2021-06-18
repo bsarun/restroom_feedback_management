@@ -110,7 +110,7 @@ else
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
+                   <ul id="sidebarnav">
                         <li class="nav-devider"></li>
                         <li class="nav-label">Home</li>
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard</span></a>
@@ -120,15 +120,21 @@ else
                             </ul>
                         </li>
                         <li class="nav-label">Log</li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Users</span></a>
+                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Janitors</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="allusers.php">All Users</a></li>
-								<li><a href="add_users.php">Add Users</a></li>
-								
-                               
+                                <li><a href="alljanitors.php">All Janitors</a></li>
+								<li><a href="add_janitors.php">Add Janitors</a></li>
                             </ul>
                         </li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-archive f-s-20 color-warning"></i><span class="hide-menu">Store</span></a>
+                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Location Details</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="alllocationdetails.php">All Location Details</a></li>
+								<li><a href="add_locationdetails.php">Add Location Details</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="map_locationtojanitor.php">Map Location To Janitor</a></li>
+                        <!-- <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-archive f-s-20 color-warning"></i><span class="hide-menu">Store</span></a>
                             <ul aria-expanded="false" class="collapse">
 								<li><a href="allrestraunt.php">All Stores</a></li>
 								<li><a href="add_category.php">Add Category</a></li>
@@ -136,7 +142,7 @@ else
                                 
                             </ul>
                         </li>
-                       <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
+                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
                             <ul aria-expanded="false" class="collapse">
 								<li><a href="all_menu.php">All Menues</a></li>
 								<li><a href="add_menu.php">Add Menu</a></li>
@@ -149,7 +155,7 @@ else
 								<li><a href="all_orders.php">All Orders</a></li>
 								  
                             </ul>
-                        </li>
+                        </li> -->
                          
                     </ul>
                 </nav>

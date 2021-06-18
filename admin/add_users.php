@@ -25,8 +25,8 @@ if(isset($_POST['submit'] ))
 	else
 	{
 		
-	$check_username= mysqli_query($db, "SELECT username FROM users where username = '".$_POST['uname']."' ");
-	$check_email = mysqli_query($db, "SELECT email FROM users where email = '".$_POST['email']."' ");
+	$check_username= mysqli_query($db, "SELECT username FROM janitors where username = '".$_POST['uname']."' ");
+	$check_email = mysqli_query($db, "SELECT email FROM janitors where email = '".$_POST['email']."' ");
 		
 
 	
@@ -70,7 +70,7 @@ if(isset($_POST['submit'] ))
 	else{
        
 	
-	$mql = "INSERT INTO users(username,f_name,l_name,email,phone,password,address) VALUES('".$_POST['uname']."','".$_POST['fname']."','".$_POST['lname']."','".$_POST['email']."','".$_POST['phone']."','".md5($_POST['password'])."','".$_POST['address']."')";
+	$mql = "INSERT INTO janitors(username,f_name,l_name,email,phone,password,address) VALUES('".$_POST['uname']."','".$_POST['fname']."','".$_POST['lname']."','".$_POST['email']."','".$_POST['phone']."','".md5($_POST['password'])."','".$_POST['address']."')";
 	mysqli_query($db, $mql);
 			$success = 	'<div class="alert alert-success alert-dismissible fade show">
 																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -191,10 +191,10 @@ if(isset($_POST['submit'] ))
                             </ul>
                         </li>
                         <li class="nav-label">Log</li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Users</span></a>
+                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Janitors</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="allusers.php">All Users</a></li>
-								<li><a href="add_users.php">Add Users</a></li>
+                                <li><a href="alljanitors.php">All Janitors</a></li>
+								<li><a href="add_janitors.php">Add Janitors</a></li>
 								
                                
                             </ul>
@@ -259,7 +259,7 @@ if(isset($_POST['submit'] ))
 					    <div class="col-lg-12">
                         <div class="card card-outline-primary">
                             <div class="card-header">
-                                <h4 class="m-b-0 text-white">Add Users</h4>
+                                <h4 class="m-b-0 text-white">Add Janitors</h4>
                             </div>
                             <div class="card-body">
                                 <form action='' method='post'  enctype="multipart/form-data">

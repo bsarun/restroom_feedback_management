@@ -14,7 +14,8 @@ if(isset($_POST['submit'] ))
 		empty($_POST['lname']) ||  
 		empty($_POST['email'])||
 		empty($_POST['password'])||
-		empty($_POST['phone']))
+		empty($_POST['phone']) ||
+		empty($_POST['address']))
 		{
 			$error = '<div class="alert alert-danger alert-dismissible fade show">
 																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -23,6 +24,9 @@ if(isset($_POST['submit'] ))
 		}
 	else
 	{
+		
+	$check_username= mysqli_query($db, "SELECT username FROM janitors where username = '".$_POST['uname']."' ");
+	$check_email = mysqli_query($db, "SELECT email FROM janitors where email = '".$_POST['email']."' ");
 		
 
 	
@@ -49,15 +53,30 @@ if(isset($_POST['submit'] ))
 																<strong>invalid phone!</strong>
 															</div>';
 	}
-	
+	elseif(mysqli_num_rows($check_username) > 0)
+     {
+    	$error = '<div class="alert alert-danger alert-dismissible fade show">
+																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																<strong>Username already exist!</strong>
+															</div>';
+     }
+	elseif(mysqli_num_rows($check_email) > 0)
+     {
+    	$error = '<div class="alert alert-danger alert-dismissible fade show">
+																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																<strong>email already exist!</strong>
+															</div>';
+     }
 	else{
-       
+    
+   
 	
-	$mql = "update users set username='$_POST[uname]', f_name='$_POST[fname]', l_name='$_POST[lname]',email='$_POST[email]',phone='$_POST[phone]',password='".md5($_POST[password])."' where u_id='$_GET[user_upd]' ";
+	$mql = "INSERT INTO janitors(username,f_name,l_name,email,phone,password,address) VALUES('".$_POST['uname']."','".$_POST['fname']."','".$_POST['lname']."','".$_POST['email']."','".$_POST['phone']."','".md5($_POST['password'])."','".$_POST['address']."')";
+    
 	mysqli_query($db, $mql);
 			$success = 	'<div class="alert alert-success alert-dismissible fade show">
 																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>User Updated!</strong></div>';
+																<strong>Congrass!</strong> New User Added Successfully.</br></div>';
 	
     }
 	}
@@ -149,7 +168,7 @@ if(isset($_POST['submit'] ))
                             <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/users/5.jpg" alt="user" class="profile-pic" /></a>
                             <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                                 <ul class="dropdown-user">
-                                    <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout</a></li>
+                                   <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -164,7 +183,7 @@ if(isset($_POST['submit'] ))
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
+                   <ul id="sidebarnav">
                         <li class="nav-devider"></li>
                         <li class="nav-label">Home</li>
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard</span></a>
@@ -178,11 +197,17 @@ if(isset($_POST['submit'] ))
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="alljanitors.php">All Janitors</a></li>
 								<li><a href="add_janitors.php">Add Janitors</a></li>
-								
-                               
                             </ul>
                         </li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-archive f-s-20 color-warning"></i><span class="hide-menu">Store</span></a>
+                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Location Details</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="alllocationdetails.php">All Location Details</a></li>
+								<li><a href="add_locationdetails.php">Add Location Details</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="map_locationtojanitor.php">Map Location To Janitor</a></li>
+                        <!-- <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-archive f-s-20 color-warning"></i><span class="hide-menu">Store</span></a>
                             <ul aria-expanded="false" class="collapse">
 								<li><a href="allrestraunt.php">All Stores</a></li>
 								<li><a href="add_category.php">Add Category</a></li>
@@ -190,7 +215,7 @@ if(isset($_POST['submit'] ))
                                 
                             </ul>
                         </li>
-                      <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
+                     <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
                             <ul aria-expanded="false" class="collapse">
 								<li><a href="all_menu.php">All Menues</a></li>
 								<li><a href="add_menu.php">Add Menu</a></li>
@@ -203,8 +228,7 @@ if(isset($_POST['submit'] ))
 								<li><a href="all_orders.php">All Orders</a></li>
 								  
                             </ul>
-                        </li>
-						
+                        </li> -->
                          
                     </ul>
                 </nav>
@@ -233,13 +257,9 @@ if(isset($_POST['submit'] ))
                 <!-- Start Page Content -->
                   
 									
-									<?php  
+									<?php
 									        echo $error;
-									        echo $success; 
-											
-											echo var_dump($_POST);
-											
-											?>
+									        echo $success; ?>
 									
 									
 								
@@ -247,28 +267,25 @@ if(isset($_POST['submit'] ))
 					    <div class="col-lg-12">
                         <div class="card card-outline-primary">
                             <div class="card-header">
-                                <h4 class="m-b-0 text-white">Update Janitors</h4>
+                                <h4 class="m-b-0 text-white">Add Janitors</h4>
                             </div>
                             <div class="card-body">
-							  <?php $ssql ="select * from users where u_id='$_GET[user_upd]'";
-													$res=mysqli_query($db, $ssql); 
-													$newrow=mysqli_fetch_array($res);?>
-                                <form action='' method='post'  >
+                                <form action='' method='post'  enctype="multipart/form-data">
                                     <div class="form-body">
-                                      
+                                       
                                         <hr>
                                         <div class="row p-t-20">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Username</label>
-                                                    <input type="text" name="uname" class="form-control" value="<?php  echo $newrow['username']; ?>" placeholder="username">
+                                                    <input type="text" name="uname" class="form-control" placeholder="username">
                                                    </div>
                                             </div>
                                             <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group has-danger">
                                                     <label class="control-label">First-Name</label>
-                                                    <input type="text" name="fname" class="form-control form-control-danger"  value="<?php  echo $newrow['f_name'];  ?>" placeholder="jon">
+                                                    <input type="text" name="fname" class="form-control form-control-danger" placeholder="jon">
                                                     </div>
                                             </div>
                                             <!--/span-->
@@ -278,14 +295,14 @@ if(isset($_POST['submit'] ))
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Last-Name </label>
-                                                    <input type="text" name="lname" class="form-control" placeholder="doe"  value="<?php  echo $newrow['l_name']; ?>">
+                                                    <input type="text" name="lname" class="form-control" placeholder="doe">
                                                    </div>
                                             </div>
                                             <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group has-danger">
                                                     <label class="control-label">Email</label>
-                                                    <input type="text" name="email" class="form-control form-control-danger"  value="<?php  echo $newrow['email'];  ?>" placeholder="example@gmail.com">
+                                                    <input type="text" name="email" class="form-control form-control-danger" placeholder="example@gmail.com">
                                                     </div>
                                             </div>
                                             <!--/span-->
@@ -295,19 +312,29 @@ if(isset($_POST['submit'] ))
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Password</label>
-                                                    <input type="text" name="password" class="form-control form-control-danger"   value="<?php  echo $newrow['password'];  ?>" placeholder="password">
+                                                    <input type="text" name="password" class="form-control form-control-danger" placeholder="password">
                                                     </div>
                                                 </div>
                                         
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Phone</label>
-                                                    <input type="text" name="phone" class="form-control form-control-danger"   value="<?php  echo $newrow['phone'];  ?>" placeholder="phone">
+                                                    <input type="text" name="phone" class="form-control form-control-danger" placeholder="phone">
                                                     </div>
                                                 </div>
                                             </div>
                                             <!--/span-->
-                                            
+                                            <h3 class="box-title m-t-40"> Address</h3>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-12 ">
+                                                <div class="form-group">
+                                                    
+                                                    <textarea name="address" type="text" style="height:100px;" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
                                       
                                             <!--/span-->
                                         </div>

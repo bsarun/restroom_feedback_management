@@ -115,10 +115,10 @@ session_start();
                             </ul>
                         </li>
                         <li class="nav-label">Log</li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Users</span></a>
+                        <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Janitors</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="allusers.php">All Users</a></li>
-								<li><a href="add_users.php">Add Users</a></li>
+                                <li><a href="alljanitors.php">All Janitors</a></li>
+								<li><a href="add_janitors.php">Add Janitors</a></li>
 								
                                
                             </ul>
@@ -171,7 +171,7 @@ session_start();
                        
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">All Registered users</h4>
+                                <h4 class="card-title">All Registered Janitors</h4>
                              
                                 <div class="table-responsive m-t-40">
                                     <table id="myTable" class="table table-bordered table-striped">
